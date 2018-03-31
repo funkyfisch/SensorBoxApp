@@ -33,7 +33,7 @@ services:
         target: /usr/share/app
     ports:
       - "9595:9595"
-    command: "npm run dev"
+    command: "sh ./bin/startup.sh"
     logging:
       options:
         max-size: "200k"
