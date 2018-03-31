@@ -1,0 +1,64 @@
+version: '3.2'
+
+services:
+
+  nodejs:
+    build:
+      context: .
+      dockerfile: docker/nodejs/Dockerfile
+    image: sensorbox-nodejs
+    container_name: sensorbox-nodejs
+    volumes:
+      - type: bind
+        source: ./nodejs/
+        target: /usr/share/app
+    ports:
+      - "8585:8585"
+    command: "sh ./bin/startup.sh"
+    logging:
+      options:
+        max-size: "200k"
+        max-file: "10"
+    restart: always
+
+  vuejs:
+    build:
+      context: .
+      dockerfile: docker/vuejs/Dockerfile
+    image: sensorbox-vuejs
+    container_name: sensorbox-vuejs
+    volumes:
+      - type: bind
+        source: ./vuejs/
+        target: /usr/share/app
+    ports:
+      - "9595:9595"
+    command: "npm run dev"
+    logging:
+      options:
+        max-size: "200k"
+        max-file: "10"
+    restart: always
+
+  mongodb:
+    build:
+      context: .
+      dockerfile: docker/mongodb/Dockerfile
+    image: sensorbox-mongodb
+    container_name: sensorbox-mongodb
+    volumes:
+      - type: volume
+        source: mongodbvolume
+        target: /data/db
+    ports:
+      - "27017:27017"
+    command: "mongod --bind_ip 0.0.0.0"
+    logging:
+      options:
+        max-size: "100k"
+        max-file: "10"
+    restart: always
+
+volumes:
+  mongodbvolume:
+    driver: local
