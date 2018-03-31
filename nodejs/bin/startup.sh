@@ -1,2 +1,2 @@
-npm install
+npm install --verbose
 npm run dev
