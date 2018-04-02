@@ -3,10 +3,12 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://sensorbox-mongodb:27017/test')
+
 var config = require('./config')
 var mainRouter = require('./src/routes/MainRouter')
 var supervisor = require('./src/scheduler/Supervisor')
 supervisor.start()
+
 const app = express()
 app.use(bodyParser.urlencoded({ extended:true }))
 app.use(bodyParser.json())

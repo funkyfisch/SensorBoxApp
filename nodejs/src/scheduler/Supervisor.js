@@ -11,21 +11,6 @@ Supervisor.getHostMachineStatus = function() {
         .catch((error) => reject(error))
       resolve('Sensor data saved')
     })
-    // si.currentLoad().then((data) => {
-    //   SensorService.saveSensorReading('cpu1', 'cpuLoad', 'i7', data.cpus[1].load)
-    //     .then(() => console.log('values'))
-    //     .catch((error) => reject(error))
-    // })
-    // si.currentLoad().then((data) => {
-    //   SensorService.saveSensorReading('cpu2', 'cpuLoad', 'i7', data.cpus[2].load)
-    //     .then(() => console.log('values'))
-    //     .catch((error) => reject(error))
-    // })
-    // si.currentLoad().then((data) => {
-    //   SensorService.saveSensorReading('cpu3', 'cpuLoad', 'i7', data.cpus[3].load)
-    //     .then(() => console.log('values'))
-    //     .catch((error) => reject(error))
-    // })
   })
 }
 
