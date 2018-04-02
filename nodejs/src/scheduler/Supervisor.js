@@ -22,14 +22,14 @@ var jobQueue = [Supervisor.getHostMachineStatus]
 
 Supervisor.start = function() {
   setInterval(() => {
-    var interval = 1000
+    var interval = 10000
     jobQueue.forEach((job) => {
       setTimeout(() => {
         job()
       }, interval)
       interval += 1000
     })
-  }, 1000)
+  }, 10000)
 }
 
 module.exports = Supervisor

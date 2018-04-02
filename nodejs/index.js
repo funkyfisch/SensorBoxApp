@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://sensorbox-mongodb:27017/test')
+mongoose.connect('mongodb://example:example@sensorboxapp-shard-00-00-azkn8.mongodb.net:27017,sensorboxapp-shard-00-01-azkn8.mongodb.net:27017,sensorboxapp-shard-00-02-azkn8.mongodb.net:27017/test?ssl=true&replicaSet=SensorBoxApp-shard-0&authSource=admin')
 
 var config = require('./config')
 var mainRouter = require('./src/routes/MainRouter')

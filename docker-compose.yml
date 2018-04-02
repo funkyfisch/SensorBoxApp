@@ -40,25 +40,6 @@ services:
         max-file: "10"
     restart: always
 
-  mongodb:
-    build:
-      context: .
-      dockerfile: docker/mongodb/Dockerfile
-    image: sensorbox-mongodb
-    container_name: sensorbox-mongodb
-    volumes:
-      - type: volume
-        source: mongodbvolume
-        target: /data/db
-    ports:
-      - "27017:27017"
-    command: "mongod --bind_ip 0.0.0.0"
-    logging:
-      options:
-        max-size: "100k"
-        max-file: "10"
-    restart: always
-
 volumes:
   mongodbvolume:
     driver: local
