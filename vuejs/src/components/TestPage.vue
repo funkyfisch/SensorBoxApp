@@ -1,20 +1,31 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div v-if="loading" class="jumbotron">
       <div class="row">
-        <div class="col-lg-4 offset-lg-4">
+        <div class="col-lg-4 col-md-4">
           <div class="card">
             <div class="card-header">
               <h4 class="card-title"> Current Load </h4>
             </div>
             <div class="card-body">
-              <h3> {{this.cpuLoad}} %</h3>
+              <div class="row">
+                <div class="col-lg-4 offset-lg-4 col-md-4 offset-md-4">
+                  <h5> Average Load </h5>
+                  <h3> {{this.cpuLoad}} %</h3>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div v-if="this.cpus.length > 0" class="row">
+                <div v-for="cpu, index in this.cpus" class="col-lg-3 col-md-3">
+                  <h6> core #{{index+1}} </h6>
+                  <h6> {{cpu.load.toFixed(2)}} </h6>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4 offset-lg-4">
+        <div class="col-lg-4">
           <div class="card">
             <div class="card-header">
               <h5 class="card-title">Add a chart </h5>
@@ -78,7 +89,8 @@ export default {
         }
       },
       chartWidgets: [],
-      cpuLoad: {}
+      cpuLoad: {},
+      cpus: []
     }
   },
   mounted: function () {
@@ -94,7 +106,8 @@ export default {
       this.axios.get('/hostStatus/cpu/currentLoad')
         .then((response) => {
           console.log(response)
-          this.cpuLoad = Math.floor(response.data.result.currentload)
+          this.cpuLoad = response.data.result.currentload.toFixed(2)
+          this.cpus = response.data.result.cpus
         })
     },
     addChart: function () {

@@ -6,7 +6,7 @@ mongoose.connect('mongodb://example:example@sensorboxapp-shard-00-00-azkn8.mongo
 
 var config = require('./config')
 var mainRouter = require('./src/routes/MainRouter')
-var supervisor = require('./src/scheduler/Supervisor')
+// var supervisor = require('./src/scheduler/Supervisor')
 // supervisor.start()
 
 const app = express()
