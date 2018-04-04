@@ -8,21 +8,33 @@ HostStatusService.getBasicInfo = function() {
     si.system()
       .then((data) => {
         result.system = data
-        resolve(result)
+        si.bios()
+          .then((data) => {
+            result.bios = data
+            si.battery()
+              .then((data) => {
+                result.baseboard = data
+                resolve(result)
+              })
+              .catch((error) => {
+                reject(error)
+              })
+          })
+          .catch((error) => {
+            reject(error)
+          })
       })
       .catch((error) => {
         reject(error)
       })
-    si.bios()
+  })
+}
+
+HostStatusService.getCpuLoads = function() {
+  return new Promise((resolve, reject) => {
+    si.currentLoad()
       .then((data) => {
-        result.bios = data
-      })
-      .catch((error) => {
-        reject(error)
-      })
-    si.baseboard()
-      .then((data) => {
-        result.baseboard = data
+        resolve(data)
       })
       .catch((error) => {
         reject(error)

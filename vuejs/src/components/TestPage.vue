@@ -5,6 +5,18 @@
         <div class="col-lg-4 offset-lg-4">
           <div class="card">
             <div class="card-header">
+              <h4 class="card-title"> Current Load </h4>
+            </div>
+            <div class="card-body">
+              <h3> {{this.cpuLoad}} %</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 offset-lg-4">
+          <div class="card">
+            <div class="card-header">
               <h5 class="card-title">Add a chart </h5>
             </div>
             <div class="card-body">
@@ -73,14 +85,18 @@ export default {
     setTimeout(() => {
       this.loading = true
     }, 3500)
+    setInterval(() => {
+      this.getCpuLoad()
+    }, 1000)
   },
   methods: {
-    // getCpuLoad: function () {
-    //   this.axios.post('/sensors/values/cpu0&cpuLoad&i7')
-    //     .then((response) => {
-    //       this.cpuLoad = response.data.result
-    //     })
-    // },
+    getCpuLoad: function () {
+      this.axios.get('/hostStatus/cpu/currentLoad')
+        .then((response) => {
+          console.log(response)
+          this.cpuLoad = Math.floor(response.data.result.currentload)
+        })
+    },
     addChart: function () {
       var chart = {
         type: this.chartType,
