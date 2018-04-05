@@ -40,6 +40,17 @@ services:
         max-file: "10"
     restart: always
 
+    camera:
+      build:
+        context: .
+        dockerfile: docker/camera/Dockerfile
+      image: sensorbox-camera
+      container_name: sensorbox-camera
+      ports:
+        - "8080:8080"
+      restart: always
+      command: "uv4l --driver raspicam --auto-video_nr --width 640 --height 480 --encoding jpeg"
+
 volumes:
   mongodbvolume:
     driver: local
