@@ -1,7 +1,9 @@
 FROM schachr/raspbian-stretch
 
-RUN curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
+RUN apt-get update
+RUN apt-get install curl nano
+RUN curl http://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | apt-key add -
 RUN echo 'deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main' >> /etc/apt/sources.list
-RUN sudo apt-get update
-RUN sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-webrtc
+RUN apt-get update
+RUN apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-server uv4l-uvc uv4l-xscreen uv4l-mjpegstream uv4l-dummy uv4l-raspidisp uv4l-webrtc
 RUN openssl genrsa -out selfsign.key 2048 && openssl req -new -x509 -key selfsign.key -out selfsign.crt -sha256
