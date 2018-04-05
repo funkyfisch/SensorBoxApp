@@ -42,4 +42,27 @@ HostStatusService.getCpuLoads = function() {
   })
 }
 
+HostStatusService.getMemoryUsage = function() {
+  return new Promise((resolve, reject) => {
+    si.mem()
+      .then((data) => {
+        resolve(data)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+HostStatusService.getStorageUsage = function() {
+  return new Promise((resolve, reject) => {
+    si.fsSize()
+      .then((data) => {
+        resolve(data)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+  })
+}
+
 module.exports = HostStatusService
