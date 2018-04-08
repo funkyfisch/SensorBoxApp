@@ -7,8 +7,9 @@ More info coming soon
 
 ### Development ( x86 - x64 )
 
-Clone the repository on your machine
-Install Docker and Docker compose
+* Clone the repository on your machine
+* Install Docker and Docker compose
+
 At the root of the folder, run
 ```
 ./start-dev.sh
