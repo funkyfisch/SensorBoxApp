@@ -2,6 +2,29 @@ version: '3.2'
 
 services:
 
+  arduino:
+    build:
+      context: .
+      dockerfile: docker/arduino/Dockerfile
+    image: sensorbox-arduino
+    container_name: sensorbox-arduino
+    volumes:
+      - type: bind
+        source: ./arduino/
+        target: /usr/sketch/
+      - type: bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+    command: "arduino"
+    devices:
+      - dev/tty
+      - dev/bus/usb
+    tty: true
+    network_mode: "host"
+    environment:
+      - DISPLAY=unix:0
+
+
   nodejs:
     build:
       context: .

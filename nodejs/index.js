@@ -8,7 +8,6 @@ var config = require('./config')
 var mainRouter = require('./src/routes/MainRouter')
 // var supervisor = require('./src/scheduler/Supervisor')
 // supervisor.start()
-
 const app = express()
 app.use(bodyParser.urlencoded({ extended:true }))
 app.use(bodyParser.json())

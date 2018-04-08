@@ -9,9 +9,9 @@ More info coming soon
 
 Clone the repository on your machine
 Install Docker and Docker compose
-At the root of the folder, run 
+At the root of the folder, run
 ```
-docker-compose up
+./start-dev.sh
 ```
 
 
@@ -30,7 +30,7 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 
-Install docker-compose for raspberry pi: 
+Install docker-compose for raspberry pi:
 
 ```
 sudo pip install docker-compose
@@ -40,4 +40,4 @@ sudo pip install docker-compose
 ## Acknowledgments
 
 * [README template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2/) by PurpleBooth
-
+* [Dockerized Arduino IDE](https://github.com/tombenke/darduino) by tombenke
