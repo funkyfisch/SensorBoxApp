@@ -63,6 +63,33 @@ services:
         max-file: "10"
     restart: always
 
+  vuejs-build:
+    build:
+      context: .
+      dockerfile: docker/vuejs/Dockerfile
+    image: sensorbox-vuejs
+    container_name: sensorbox-vuejs
+    volumes:
+      - type: bind
+        source: ./vuejs/
+        target: /usr/share/app
+    command: "npm run build"
+
+  server:
+    image: sensorbox-nodejs
+    volumes:
+      - type: bind
+        source: ./vuejs/dist/
+        target: /usr/share/app/dist
+      - type: bind
+        source: ./server/
+        target: /usr/share/app
+    ports:
+      - "8989:8989"
+    working_dir: /usr/share/app
+    command: "bash ./server.sh"
+    restart: always
+
 volumes:
   mongodbvolume:
     driver: local

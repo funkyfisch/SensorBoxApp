@@ -10,11 +10,16 @@ More info coming soon
 * Clone the repository on your machine
 * Install Docker and Docker compose
 
-At the root of the folder, run
+To run the Arduino IDE :
 ```
-./start-dev.sh
+./start-dev-arduino.sh
 ```
 
+To run the webapp development environment :
+```
+./start-dev-webapp.sh
+```
+The webapp development environment lints, tests and builds a code at the beginning of every session.
 
 ### Deployment ( e.g. Raspberry Pi )
 
@@ -35,6 +40,12 @@ Install docker-compose for raspberry pi:
 
 ```
 sudo pip install docker-compose
+```
+
+Run the deployment script:
+
+```
+./start-deploy.sh
 ```
 
 

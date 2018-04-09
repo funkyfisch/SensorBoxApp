@@ -1,0 +1,18 @@
+{
+  "name": "vueserver",
+  "version": "1.0.0",
+  "description": "vueserver",
+  "author": "Ioannis Gkikas",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "latest",
+    "serve-static": "latest"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
+}
