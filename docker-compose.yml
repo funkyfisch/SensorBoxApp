@@ -17,6 +17,7 @@ services:
         target: /tmp/.X11-unix
     command: "arduino"
     devices:
+      - dev/rfcomm0
       - dev/tty
       - dev/bus/usb
     tty: true
