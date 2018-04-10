@@ -35,7 +35,7 @@ RUN (wget -q -O- https://downloads.arduino.cc/arduino-${ARDUINO_IDE_VERSION}-lin
 	&& ln -s /usr/local/share/arduino-${ARDUINO_IDE_VERSION} /usr/local/share/arduino \
 	&& ln -s /usr/local/share/arduino-${ARDUINO_IDE_VERSION}/arduino /usr/local/bin/arduino)
 
-RUN apt-get update && apt-get install git -y
+RUN apt-get update && apt-get install -y git bluez
 ENV DISPLAY :1.0
 
 WORKDIR /usr/sketch

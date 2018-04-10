@@ -21,6 +21,7 @@ services:
       - dev/bus/usb
     tty: true
     network_mode: "host"
+    privileged: true
     environment:
       - DISPLAY=unix:0
 
