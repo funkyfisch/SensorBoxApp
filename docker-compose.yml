@@ -15,7 +15,7 @@ services:
       - type: bind
         source: /tmp/.X11-unix
         target: /tmp/.X11-unix
-    command: "arduino"
+    command: "sh ./bin/startup.sh"
     devices:
       - dev/rfcomm0
       - dev/tty

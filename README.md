@@ -48,16 +48,12 @@ Run the deployment script:
 ./start-deploy.sh
 ```
 
-### Bluetooth support inside Docker 
+### Bluetooth support inside Docker (experimental)
 
-Temporarily, a solution is given by creating an rfcomm device on the host machine before starting a service.
-For more details on how this works, check [this](http://embeddedprogrammer.blogspot.se/2012/06/ubuntu-hacking-hc-06-bluetooth-module.html)
+~~Temporarily, a solution is given by creating an rfcomm device on the host machine before starting a service.
+For more details on how this works, check [this](http://embeddedprogrammer.blogspot.se/2012/06/ubuntu-hacking-hc-06-bluetooth-module.html)~~
 
-If you want to use a bluetooth device ( like a HC05 module ) with the arduino service for debugging or your instance relies on a wireless arduino node set using bluetooth, you should pair with your bluetooth device first, and use its MAC address as a parameter for the startup scripts, like so :
-```
-./start-deploy.sh 12-34-56-78-90
-```
-
+All that is needed is to pair your bluetooth device with your host machine once. The connection is made after the initiation of any docker service utilises the device. This is done by forcing a binding on the images, which creates a preconfigured rfcomm device listed in /dev/, to which the container, when executing, is binding the paired device if it is around. This approach however is in need of testing, and is highly experimental.
 
 ## Acknowledgments
 

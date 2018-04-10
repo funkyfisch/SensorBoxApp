@@ -39,6 +39,7 @@ RUN apt-get update && apt-get install -y git bluez
 ENV DISPLAY :1.0
 
 WORKDIR /usr/sketch
+ADD arduino/rfcomm.conf /etc/bluetooth/rfcomm.conf
 RUN mkdir library && mkdir sensornode
 RUN cd library \
     && git clone https://github.com/adafruit/DHT-sensor-library \
