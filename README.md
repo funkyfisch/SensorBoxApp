@@ -14,6 +14,7 @@ To run the Arduino IDE :
 ```
 ./start-dev-arduino.sh
 ```
+When opening the IDE, change the sketchbook location, so the libraries are recognised correctly by the IDE.
 
 To run the webapp development environment :
 ```
