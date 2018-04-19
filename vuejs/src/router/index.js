@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import TestPage from '@/components/TestPage.vue'
 import HostStatus from '@/components/views/HostStatus.vue'
+import HouseSensors from '@/components/views/HouseSensors.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -18,6 +19,12 @@ export default new Router({
       meta: 'Host Status',
       name: 'HostStatus',
       component: HostStatus
+    },
+    {
+      path: '/houseSensors',
+      meta: 'House Sensors',
+      name: 'HouseSensors',
+      component: HouseSensors
     }
   ]
 })

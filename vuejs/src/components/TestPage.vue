@@ -2,7 +2,7 @@
   <div>
     <div v-if="loading" class="jumbotron">
       <button class="btn btn-primary"v-on:click="goToHostStatus()">Host Status</button>
-      <button class="btn btn-success">Other Stuff</button>
+      <button class="btn btn-success" v-on:click="goToHouseSensors">Other Stuff</button>
     </div>
     <loading-animation v-else></loading-animation>
   </div>
@@ -47,21 +47,13 @@ export default {
     setTimeout(() => {
       this.loading = true
     }, 3500)
-    setInterval(() => {
-      this.getCpuLoad()
-    }, 1000)
   },
   methods: {
     goToHostStatus: function () {
       this.$router.push('/hostStatus')
     },
-    getCpuLoad: function () {
-      this.axios.get('/hostStatus/cpu/currentLoad')
-        .then((response) => {
-          console.log(response)
-          this.cpuLoad = response.data.result.currentload.toFixed(2)
-          this.cpus = response.data.result.cpus
-        })
+    goToHouseSensors: function () {
+      this.$router.push('/houseSensors')
     },
     addChart: function () {
       var chart = {

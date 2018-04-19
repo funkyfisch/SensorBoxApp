@@ -1,7 +1,11 @@
+var BluetoothPort = require('../infrastructure/BluetoothPort')
 var Sensor = require('../model/Sensors')
 var Value = require('../model/Values')
 
 var SensorService = new Object
+setInterval(() => {
+  BluetoothPort.connectBluetooth()
+}, 3000)
 
 SensorService.getAll = function() {
   return new Promise((resolve, reject) => {
@@ -84,6 +88,20 @@ SensorService.create = function(name, type, model) {
         resolve('Successfully created sensor')
       }
     })
+  })
+}
+
+SensorService.getLiveData = function() {
+  return new Promise((resolve, reject) => {
+    var array = []
+    var readings = BluetoothPort.getLatestSensorReadings()
+    if (readings === '') {
+      reject('No readings. something went wrong')
+    }
+    else {
+      array = readings.split(',')
+      resolve(array)
+    }
   })
 }
 module.exports = SensorService

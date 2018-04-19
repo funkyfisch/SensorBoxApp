@@ -1,5 +1,6 @@
 var sensorService = require('../services/SensorService')
 var sensorRouter = require('express').Router()
+
 sensorRouter.get('/getGeneratedHourlyData', (req, res) => {
   res.status(200).json({ success:true, result: req.params })
 })
@@ -11,6 +12,16 @@ sensorRouter.get('/all', (req, res) => {
     })
     .catch(() => {
       res.status(404).json({ success:false, error: 'Service Error' })
+    })
+})
+
+sensorRouter.get('/live', (req, res) => {
+  sensorService.getLiveData()
+    .then((data) => {
+      res.status(200).json({ success: true, result: data })
+    })
+    .catch((error) => {
+      res.status(404).json({ success: false, error: error })
     })
 })
 
