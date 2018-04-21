@@ -1,20 +1,23 @@
-var BluetoothPort = require('../infrastructure/BluetoothPort')
 var Sensor = require('../model/Sensors')
 var Value = require('../model/Values')
 
 var SensorService = new Object
-setInterval(() => {
-  BluetoothPort.connectBluetooth()
-}, 3000)
 
 SensorService.getAll = function() {
   return new Promise((resolve, reject) => {
-    Sensor.find({}, function(err, sensors) {
-      if (!err && sensors.length > 0) {
-        resolve(sensors)
-      }
-      reject()
-    })
+    var timestamp_minute = Math.floor(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes(), new Date().getSeconds()-10).getTime()/1000)
+    console.log(timestamp_minute)
+    Value
+      .find({})
+      .where('timestamp_minute').gt(timestamp_minute)
+      .exec(function(err, sensors) {
+        if (!err) {
+          resolve(sensors)
+        } else {
+          console.log(err)
+          reject('Problem reading from DB')
+        }
+      })
   })
 }
 
@@ -33,41 +36,17 @@ SensorService.getValuesOfOneSensor = function(name, type, model) {
 
 SensorService.saveSensorReading = function(name, type, model, reading) {
   return new Promise((resolve, reject) => {
-    var now = new Date()
-    var hour = now.getHours()
-    var minute = now.getMinutes()
-    var second = now.getSeconds()
-    var hourISO = new Date(now.getYear(), now.getMonth(), now.getDay(), hour)
-    Value.find({ sensorname: name, timestamp_hour: hourISO }, (error, value) => {
-      if (value[0]) {
-        value[0].values[minute][second] = reading + ''
-        Value.update({ timestamp_hour: hourISO }, { $set: { values: value[0].values } }, (error) => {
-          if (error) reject(error)
-          resolve()
-        })
-      }
-      else {
-        console.log(`Creating new hour timestamp for sensor ${name}${type}${model} at ${hour}`)
-        var thing = {}
-        for (var i = 0; i < 60; i++) {
-          thing[i] = {}
-          for (var j = 0; j < 60; j++) {
-            thing[i][j] = 0.0 + ''
-          }
-        }
-        thing[minute][second] = reading
-        value = new Value({
-          sensorname: name,
-          sensortype: type,
-          sensorhardware_model: model,
-          values: thing,
-          timestamp_hour: hourISO
-        })
-        value.save((error) => {
-          if (error) reject(error)
-          resolve()
-        })
-      }
+    var time = Math.floor(new Date().getTime()/1000)
+    var value = new Value({
+      sensorname: name,
+      sensortype: type,
+      sensorhardware_model: model,
+      value: reading,
+      timestamp_minute: time
+    })
+    value.save((error) => {
+      if (error) reject(error)
+      resolve()
     })
   })
 }
@@ -91,17 +70,4 @@ SensorService.create = function(name, type, model) {
   })
 }
 
-SensorService.getLiveData = function() {
-  return new Promise((resolve, reject) => {
-    var array = []
-    var readings = BluetoothPort.getLatestSensorReadings()
-    if (readings === '') {
-      reject('No readings. something went wrong')
-    }
-    else {
-      array = readings.split(',')
-      resolve(array)
-    }
-  })
-}
 module.exports = SensorService
