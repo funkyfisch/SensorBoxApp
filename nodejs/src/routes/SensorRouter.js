@@ -10,8 +10,8 @@ sensorRouter.get('/all', (req, res) => {
     .then((sensors) => {
       res.status(200).json({ success:true, result: sensors })
     })
-    .catch(() => {
-      res.status(404).json({ success:false, error: 'Service Error' })
+    .catch((error) => {
+      res.status(404).json({ success:false, error: error })
     })
 })
 

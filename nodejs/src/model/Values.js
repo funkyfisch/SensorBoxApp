@@ -7,7 +7,7 @@ var ValueSchema = new Schema({
   sensortype: { type: String, required: true },
   sensorhardware_model: { type: String, required: true },
   values: { type: Object },
-  timestamp_hour : { type: Date, required: true }
+  timestamp_minute : { type: Date, required: true }
 })
 
 module.exports = mongoose.model('Value', ValueSchema)
