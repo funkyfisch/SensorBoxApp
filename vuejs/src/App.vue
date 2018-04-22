@@ -22,7 +22,8 @@ export default {
     return {
       links: [
         { path: '/', title: 'Home' },
-        { path: '/hostStatus', title: 'Host Status' }
+        { path: '/hostStatus', title: 'Host Status' },
+        { path: '/settings', title: 'Settings' }
       ]
     }
   },

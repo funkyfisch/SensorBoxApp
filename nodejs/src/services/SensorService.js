@@ -51,6 +51,15 @@ SensorService.saveSensorReading = function(name, type, model, reading) {
   })
 }
 
+SensorService.dropSensorCollection = function() {
+  return new Promise((resolve, reject) => {
+    Value.remove({}, (err) => {
+      if (err) reject(err)
+      else resolve('Sensors collection dropped')
+    })
+  })
+}
+
 SensorService.create = function(name, type, model) {
   return new Promise((resolve, reject) => {
     var sensor = new Sensor({

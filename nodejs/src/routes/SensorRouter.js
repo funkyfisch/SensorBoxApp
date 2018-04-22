@@ -44,6 +44,12 @@ sensorRouter.post('/new/:name&:type&:model', (req, res) => {
       res.status(404).json({ success:false, error: error })
     })
 })
+
+sensorRouter.get('/dropSensorsCollection', (req, res) => {
+  sensorService.dropSensorCollection()
+    .then((result) => res.status(200).json({ success: true, message: result }))
+})
+
 sensorRouter.get('*', (req, res) => {
   res.status(404).json({ success:false, result: 'Nothing to see here' })
 })
