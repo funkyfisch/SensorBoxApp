@@ -4,10 +4,20 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://example:example@sensorboxapp-shard-00-00-azkn8.mongodb.net:27017,sensorboxapp-shard-00-01-azkn8.mongodb.net:27017,sensorboxapp-shard-00-02-azkn8.mongodb.net:27017/test?ssl=true&replicaSet=SensorBoxApp-shard-0&authSource=admin')
 
+var settings
+
 var config = require('./config')
 var mainRouter = require('./src/routes/MainRouter')
-var supervisor = require('./src/scheduler/Supervisor')
-supervisor.start()
+
+require('./src/infrastructure/SettingsParser').readFrom('./settings.json').then((contents) =>
+{
+  settings = contents
+  if (settings[0].value === 'true') {
+    console.log('Starting scheduler')
+    var supervisor = require('./src/scheduler/Supervisor')
+    supervisor.start()
+  }
+})
 const app = express()
 app.use(bodyParser.urlencoded({ extended:true }))
 app.use(bodyParser.json())

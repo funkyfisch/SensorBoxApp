@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import TestPage from '@/components/TestPage.vue'
 import HostStatus from '@/components/views/HostStatus.vue'
 import HouseSensors from '@/components/views/HouseSensors.vue'
+import Settings from '@/components/views/Settings.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -25,6 +26,12 @@ export default new Router({
       meta: 'House Sensors',
       name: 'HouseSensors',
       component: HouseSensors
+    },
+    {
+      path: '/settings',
+      meta: 'Settings',
+      name: 'Settings',
+      component: Settings
     }
   ]
 })

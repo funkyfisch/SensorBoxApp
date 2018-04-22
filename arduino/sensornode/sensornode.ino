@@ -9,13 +9,13 @@ DHT dht(DHTPIN, DHTTYPE);
 
 int moisture0,moisture1;
 void setup() {
-  
+
   Serial.begin(9600);
   Serial.println("DHTxx test!");
 
   dht.begin();
 }
-
+// start naming sensors by convention : name, type, model, timeadded
 void loop() {
   // Wait a few seconds between measurements.
   delay(1000);
@@ -28,11 +28,9 @@ void loop() {
   float h = dht.readHumidity();
   // Read temperature as Celsius (the default)
   float t = dht.readTemperature();
-  // Read temperature as Fahrenheit (isFahrenheit = true)
-  float f = dht.readTemperature(true);
 
   // Check if any reads failed and exit early (to try again).
-  if (isnan(h) || isnan(t) || isnan(f)) {
+  if (isnan(h) || isnan(t) ) {
     Serial.println("Error");
     return;
   }
