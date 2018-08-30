@@ -41,10 +41,8 @@ export default {
   methods: {
     setSettings: function () {
       console.log(this.settingsList)
-      this.axios.post('/settings', this.settingsList)
-        .then((response) => {
-          this.updateLabel = response.data.result
-        })
+      let response = await this.axios.post('/settings', this.settingsList).catch(error => throw error)
+      this.updateLabel = response.data.result
     },
     getSettings: function () {
       this.axios.get('/settings')

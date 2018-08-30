@@ -42,20 +42,18 @@ export default {
   },
   methods: {
     getLatestSensorReadings: function () {
-      this.axios.get('/sensors/live')
-        .then((response) => {
-          this.sensors = []
-          var array = response.data.result
-          array.forEach((s) => {
-            var sensor = {}
-            if (s.indexOf(':') < 0) {
-              return
-            }
-            sensor.name = s.split(':')[0]
-            sensor.value = s.split(':')[1]
-            this.sensors.push(sensor)
-          })
-        })
+      let response = await this.axios.get('/sensors/live').catch(error => alert(error))
+      this.sensors = []
+      var array = response.data.result
+      array.forEach((s) => {
+        var sensor = {}
+        if (s.indexOf(':') < 0) {
+          return
+        }
+        sensor.name = s.split(':')[0]
+        sensor.value = s.split(':')[1]
+        this.sensors.push(sensor)
+      })
     }
   }
 }

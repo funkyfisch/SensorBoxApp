@@ -103,24 +103,8 @@ export default {
     }
   },
   computed: {
-    totalStorageSize: function () {
-      let size = 0
-      if (this.storageDevices.length > 0) {
-        this.storageDevices.forEach((dev) => {
-          size += parseFloat(Math.round(dev.size).toFixed(2))
-        })
-      }
-      return size
-    },
-    totalStorageUsed: function () {
-      let size = 0
-      if (this.storageDevices.length > 0) {
-        this.storageDevices.forEach((dev) => {
-          size += parseFloat(Math.round(dev.used).toFixed(2))
-        })
-      }
-      return size
-    }
+    totalStorageSize: calculateTotalStorageSize(),
+    totalStorageUsed: calculateTotalStorageUsed()
   },
   mounted: function () {
     setInterval(() => {
@@ -129,33 +113,46 @@ export default {
       this.getStorageUsage()
     }, 1000)
   },
+
   methods: {
     getCpuLoad: function () {
-      this.axios.get('/hostStatus/cpu/currentLoad')
-        .then((response) => {
-          this.cpuLoad = response.data.result.currentload.toFixed(2)
-          this.cpus = response.data.result.cpus
-        })
+      let response = await this.axios.get('/hostStatus/cpu/currentLoad').catch(error => alert(error))
+      this.cpuLoad = response.data.result.currentload.toFixed(2)
+      this.cpus = response.data.result.cpus
     },
     getMemoryUsage: function () {
-      this.axios.get('/hostStatus/memory')
-        .then((response) => {
-          this.memory.total = Math.floor(response.data.result.total / 1000000)
-          this.memory.used = Math.floor(response.data.result.used / 1000000)
-          this.memory.swaptotal = Math.floor(response.data.result.swaptotal / 1000000)
-          this.memory.swapused = Math.floor(response.data.result.swapused / 1000000)
-          this.memory.swapfree = Math.floor(response.data.result.swapfree / 1000000)
-        })
+      let response = await this.axios.get('/hostStatus/memory').catch(error => alert(error))
+      this.memory.total = Math.floor(response.data.result.total / 1000000)
+      this.memory.used = Math.floor(response.data.result.used / 1000000)
+      this.memory.swaptotal = Math.floor(response.data.result.swaptotal / 1000000)
+      this.memory.swapused = Math.floor(response.data.result.swapused / 1000000)
+      this.memory.swapfree = Math.floor(response.data.result.swapfree / 1000000)
     },
     getStorageUsage: function () {
-      this.axios.get('/hostStatus/storage')
-        .then((response) => {
-          this.storageDevices = response.data.result
-          this.storageDevices.forEach((dev) => {
-            dev.size = Math.round(dev.size / 1000000000).toFixed(1)
-            dev.used = Math.round(dev.used / 1000000000).toFixed(1)
-          })
+      let response = await this.axios.get('/hostStatus/storage')
+      this.storageDevices = response.data.result
+      this.storageDevices.forEach((dev) => {
+        dev.size = Math.round(dev.size / 1000000000).toFixed(1)
+        dev.used = Math.round(dev.used / 1000000000).toFixed(1)
+      })
+    },
+    calculateTotalStorageUsed: function () {
+      let size = 0
+      if (this.storageDevices.length > 0) {
+        this.storageDevices.forEach((dev) => {
+          size += parseFloat(Math.round(dev.used).toFixed(2))
         })
+      }
+      return size
+    },
+    calculateTotalStorageSize: function () {
+      let size = 0
+      if (this.storageDevices.length > 0) {
+        this.storageDevices.forEach((dev) => {
+          size += parseFloat(Math.round(dev.size).toFixed(2))
+        })
+      }
+      return size
     }
   }
 }
