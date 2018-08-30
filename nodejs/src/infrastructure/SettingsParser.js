@@ -24,33 +24,25 @@ SettingsParser.writeTo = function(file, settings) {
   })
 }
 
-var fileExists = function(file) {
-  return new Promise((resolve, reject) => {
-    // fs.find(file, (err) => {
-    //   if (err) reject(err)
-    //   else resolve(true)
-    // })
-    console.log(file)
-    reject('test2')
-    setTimeout(() => {
-      resolve()
-    }, 4000)
-  })
+var fileExists = async function(file) {
+  // fs.find(file, (err) => {
+  //   if (err) reject(err)
+  //   else resolve(true)
+  // })
+  console.log(file)
+  return 'test2'
+  setTimeout(() => {
+    return
+  }, 4000)
 }
 
-SettingsParser.createSettingsFile = function() {
-  return new Promise((resolve, reject) => {
-    fileExists('../../settings.json')
-      .then((result) => {
-        if (result === true) resolve('File already exists')
-        else reject(result)
-      })
-      .catch((error) => {
-        console.log(error)
-        SettingsParser.writeTo('./settings.json', settingsFileTemplate)
-        resolve('Created new file')
-      })
-  })
+SettingsParser.createSettingsFile = async function() {
+  let settingsExists = await fileExists('../../settings.json')
+  if (settingsExists === true) return 'File already exists'
+  else {
+    SettingsParser.writeTo('./settings.json', settingsFileTemplate)
+    return 'File created!'
+  }
 }
 
 var settingsFileTemplate =
