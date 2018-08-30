@@ -1,3 +1,5 @@
+////// WIP /////////
+
 var SensorService = require('../services/SensorService')
 var si = require('systeminformation')
 var BluetoothPort = require('../infrastructure/BluetoothPort')
@@ -8,36 +10,34 @@ setInterval(() => {
 
 var Supervisor = new Object
 
-Supervisor.getHostMachineStatus = function() {
-  return new Promise((resolve, reject) => {
-    si.currentLoad().then((data) => {
-      SensorService.saveSensorReading('cpu0', 'cpuLoad', 'i7', data.cpus[0].load)
-      SensorService.saveSensorReading('cpu1', 'cpuLoad', 'i7', data.cpus[1].load)
-      SensorService.saveSensorReading('cpu2', 'cpuLoad', 'i7', data.cpus[2].load)
-      SensorService.saveSensorReading('cpu3', 'cpuLoad', 'i7', data.cpus[3].load)
+Supervisor.getHostMachineStatus = async function() {
+  let cpuData = await si.currentLoad().catch(error => throw error)
+
+    SensorService.saveSensorReading('cpu0', 'cpuLoad', 'i7', data.cpus[0].load)
+    SensorService.saveSensorReading('cpu1', 'cpuLoad', 'i7', data.cpus[1].load)
+    SensorService.saveSensorReading('cpu2', 'cpuLoad', 'i7', data.cpus[2].load)
+    SensorService.saveSensorReading('cpu3', 'cpuLoad', 'i7', data.cpus[3].load)
+  let ramData = await si.mem().catch(error => throw error)
+
+    SensorService.saveSensorReading('memory-used', 'ram', 'undefined', data.used)
+    SensorService.saveSensorReading('memory-total', 'ram', 'undefined', data.total)
+    SensorService.saveSensorReading('swap-total', 'ram', 'undefined', data.swaptotal)
+    SensorService.saveSensorReading('swap-used', 'ram', 'undefined', data.swapused)
+  let storageData = await si.fsSize().catch(error => throw error)
+
+    data.forEach((device) => {
+      SensorService.saveSensorReading(device.type, 'storage', 'undefined', device.fs)
+      SensorService.saveSensorReading(device.fs, 'size', 'undefined', device.size)
+      SensorService.saveSensorReading(device.fs, 'used', 'undefined', device.used)
     })
-    si.mem().then((data) => {
-      SensorService.saveSensorReading('memory-used', 'ram', 'undefined', data.used)
-      SensorService.saveSensorReading('memory-total', 'ram', 'undefined', data.total)
-      SensorService.saveSensorReading('swap-total', 'ram', 'undefined', data.swaptotal)
-      SensorService.saveSensorReading('swap-used', 'ram', 'undefined', data.swapused)
-    })
-    si.fsSize().then((data) => {
-      data.forEach((device) => {
-        SensorService.saveSensorReading(device.type, 'storage', 'undefined', device.fs)
-        SensorService.saveSensorReading(device.fs, 'size', 'undefined', device.size)
-        SensorService.saveSensorReading(device.fs, 'used', 'undefined', device.used)
-      })
-    })
-      .catch((error) => {
-        reject(error)
-      })
-    resolve()
   })
+    .catch((error) => {
+      reject(error)
+    })
+  resolve()
 }
 
-Supervisor.getSensorData = function() {
-  return new Promise((resolve, reject) => {
+Supervisor.getSensorData = async function() {
     var array = []
     var readings = BluetoothPort.getLatestSensorReadings()
     if (readings === '') {
@@ -53,7 +53,6 @@ Supervisor.getSensorData = function() {
       })
       resolve(array)
     }
-  })
 }
 
 var jobQueue = [Supervisor.getHostMachineStatus]

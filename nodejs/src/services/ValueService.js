@@ -2,13 +2,9 @@ var Value = require('../model/Values')
 
 var ValueService = new Object
 
-ValueService.dropValueCollection = function() {
-  return new Promise((resolve, reject) => {
-    Value.remove({}, (err) => {
-      if (err) reject(err)
-      else resolve('Values collection dropped')
-    })
-  })
+ValueService.dropValueCollection = async function() {
+  let result = await Value.remove({}).catch(error => throw error)
+  return result
 }
 
 module.exports = ValueService

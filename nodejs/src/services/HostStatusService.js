@@ -1,68 +1,25 @@
 var si = require('systeminformation')
 var HostStatusService = new Object
 
-
 HostStatusService.getBasicInfo = function() {
-  return new Promise((resolve, reject) => {
-    var result = {}
-    si.system()
-      .then((data) => {
-        result.system = data
-        si.bios()
-          .then((data) => {
-            result.bios = data
-            si.battery()
-              .then((data) => {
-                result.baseboard = data
-                resolve(result)
-              })
-              .catch((error) => {
-                reject(error)
-              })
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
+    let result = {}
+    let resultError = {}
+    result.system = await si.system().catch(error => resultError.system = error)
+    result.bios = await si.bios().catch(error => resultError.bios = error)
+    result.baseboard = await si.battery().catch(error => resultError.baseboard = error)
+    if (result !== {}) throw resultError
+    else return result
 }
 
-HostStatusService.getCpuLoads = function() {
-  return new Promise((resolve, reject) => {
-    si.currentLoad()
-      .then((data) => {
-        resolve(data)
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
+HostStatusService.getCpuLoads = async function() {
+    return await si.currentLoad().catch(error => throw error)
 }
 
-HostStatusService.getMemoryUsage = function() {
-  return new Promise((resolve, reject) => {
-    si.mem()
-      .then((data) => {
-        resolve(data)
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
+HostStatusService.getMemoryUsage = async function() {
+  return await si.mem().catch(error => throw error)
 }
-HostStatusService.getStorageUsage = function() {
-  return new Promise((resolve, reject) => {
-    si.fsSize()
-      .then((data) => {
-        resolve(data)
-      })
-      .catch((error) => {
-        reject(error)
-      })
-  })
+HostStatusService.getStorageUsage = async function() {
+  return await si.fsSize().catch(error => throw error)
 }
 
 module.exports = HostStatusService

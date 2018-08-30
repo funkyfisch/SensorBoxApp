@@ -2,25 +2,21 @@ var fs = require('fs')
 
 var SettingsParser = new Object
 
-SettingsParser.readFrom = function(file) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(file, (err, file) => {
-      if (err) reject(err)
-      else {
-        var contents = JSON.parse(file)
-        resolve(contents)
-      }
-    })
+SettingsParser.readFrom = async function(file) {
+  fs.readFile(file, (err, file) => {
+    if (err) throw err
+    else {
+      var contents = JSON.parse(file, null, 2)
+      return contents
+    }
   })
 }
 
-SettingsParser.writeTo = function(file, settings) {
-  return new Promise((resolve, reject) => {
-    var contents = JSON.stringify(settings)
-    fs.writeFile(file, contents, (err) => {
-      if (err) reject(err)
-      else resolve('Settings Updated')
-    })
+SettingsParser.writeTo = async function(file, settings) {
+  var contents = JSON.stringify(settings, null, 2);
+  fs.writeFile(file, contents, (err) => {
+    if (err) throw err
+    else return 'Settings Updated'
   })
 }
 

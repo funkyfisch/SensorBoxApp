@@ -1,20 +1,18 @@
-exports.generateHourlyData = function(sensorType, sensorID, timestampHour) {
-  return new Promise((resolve) => {
-    var generatedHourlyData = {
-      timestamp_hour: timestampHour,
-      type: sensorType,
-      sensorID,
-      values: {}
+exports.generateHourlyData = async function(sensorType, sensorID, timestampHour) {
+  var generatedHourlyData = {
+    timestamp_hour: timestampHour,
+    type: sensorType,
+    sensorID,
+    values: {}
+  }
+  for (var mins = 0; mins < 60; mins++) {
+    generatedHourlyData.values[mins] = {}
+    for (var secs = 0; secs< 60; secs++) {
+      var value = Math.random()
+      generatedHourlyData.values[mins][secs] = value
     }
-    for (var mins = 0; mins < 60; mins++) {
-      generatedHourlyData.values[mins] = {}
-      for (var secs = 0; secs< 60; secs++) {
-        var value = Math.random()
-        generatedHourlyData.values[mins][secs] = value
-      }
-    }
-    resolve(generatedHourlyData)
-  })
+  }
+  return generatedHourlyData
 }
 
 /** Generates random data, with parametricised value range, and stores it in an object as per the
