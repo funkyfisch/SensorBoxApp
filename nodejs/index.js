@@ -18,6 +18,10 @@ require('./src/infrastructure/SettingsParser').readFrom('./settings.json').then(
     supervisor.start()
   }
 })
+
+var settingsService = require('./src/services/SettingsService')
+settingsService.initialise()
+
 const app = express()
 app.use(bodyParser.urlencoded({ extended:true }))
 app.use(bodyParser.json())
