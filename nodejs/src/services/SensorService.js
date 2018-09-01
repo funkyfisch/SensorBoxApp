@@ -1,31 +1,34 @@
-var Sensor = require('../model/Sensors')
-var Value = require('../model/Values')
+const Sensor = require('../model/Sensors')
+const Value = require('../model/Values')
 
-var SensorService = new Object
+const SensorService = new Object
 
 SensorService.getAll = async function() {
   var timestamp_minute =
-    Math.floor(new Date(new Date().getFullYear(),
-                        new Date().getMonth(),
-                        new Date().getDate(),
-                        new Date().getHours(),
-                        new Date().getMinutes(),
-                        new Date().getSeconds()-10)
+    Math.floor(new Date(new Date().getFullYear(), new Date().getMonth(),
+                        new Date().getDate(), new Date().getHours(),
+                        new Date().getMinutes(), new Date().getSeconds()-10)
                       .getTime()/1000)
   console.log(timestamp_minute)
-  let sensors = await Value
-                      .find({})
-                      .where('timestamp_minute').gt(timestamp_minute)
-                      .exec()
-                      .catch(error => throw error)
-  return sensors
+  try {
+    let sensors = await Value
+    .find({})
+    .where('timestamp_minute').gt(timestamp_minute)
+    .exec()
+    return sensors
+  } catch (error) {
+    throw error
+  }
 }
 
 SensorService.getValuesOfOneSensor = async function(name, type, model) {
-  let value = await Value
-                    .find({ sensorname: name, sensortype: type, sensorhardware_model: model })
-                    .catch(error => throw error)
-  return value
+  try {
+    let value = await Value
+    .find({ sensorname: name, sensortype: type, sensorhardware_model: model })
+    return value
+  } catch (error) {
+    throw error
+  }
 }
 
 SensorService.saveSensorReading = async function(name, type, model, reading) {
@@ -37,12 +40,21 @@ SensorService.saveSensorReading = async function(name, type, model, reading) {
     value: reading,
     timestamp_minute: time
   })
-  await value.save().catch(error => throw error)
+  try {
+    await value.save()
+    return 'Sensor value stored'
+  } catch (error) {
+    throw error
+  }
 }
 
 SensorService.dropSensorCollection = async function() {
-    await Value.remove({}).catch(error => throw error)
+  try {
+    await Value.remove({})
     return 'Sensors collection dropped'
+  } catch (error) {
+    throw error
+  }
 }
 
 SensorService.create = async function(name, type, model) {
@@ -52,8 +64,12 @@ SensorService.create = async function(name, type, model) {
     hardware_model : model,
     created_at: new Date()
   })
-  await sensor.save().catch(error => throw error)
-  return 'Successfully created sensor'
+  try {
+    await sensor.save()
+    return 'Successfully created sensor'
+  } catch (error) {
+    throw error
+  }
 }
 
 module.exports = SensorService

@@ -1,7 +1,8 @@
-var si = require('systeminformation')
-var HostStatusService = new Object
+const si = require('systeminformation')
+const HostStatusService = new Object
 
-HostStatusService.getBasicInfo = function() {
+// WIP
+HostStatusService.getBasicInfo = async function() {
     let result = {}
     let resultError = {}
     result.system = await si.system().catch(error => resultError.system = error)
@@ -12,14 +13,26 @@ HostStatusService.getBasicInfo = function() {
 }
 
 HostStatusService.getCpuLoads = async function() {
-    return await si.currentLoad().catch(error => throw error)
+  try {
+    return await si.currentLoad()
+  } catch (error) {
+    throw error
+  }
 }
 
 HostStatusService.getMemoryUsage = async function() {
-  return await si.mem().catch(error => throw error)
+  try {
+    return await si.mem()
+  } catch (error) {
+    throw error
+  }
 }
 HostStatusService.getStorageUsage = async function() {
-  return await si.fsSize().catch(error => throw error)
+  try {
+    return await si.fsSize()
+  } catch (error) {
+    throw error
+  }
 }
 
 module.exports = HostStatusService

@@ -1,6 +1,6 @@
-var fs = require('fs')
+const fs = require('fs')
 
-var SettingsParser = new Object
+const SettingsParser = new Object
 
 SettingsParser.readFrom = async function(file) {
   fs.readFile(file, (err, file) => {

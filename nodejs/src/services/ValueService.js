@@ -1,10 +1,14 @@
-var Value = require('../model/Values')
+const Value = require('../model/Values')
 
-var ValueService = new Object
+const ValueService = new Object
 
 ValueService.dropValueCollection = async function() {
-  let result = await Value.remove({}).catch(error => throw error)
-  return result
+  try {
+    let result = await Value.remove({}).catch(error => throw error)
+    return result
+  } catch (error) {
+    throw error
+  }
 }
 
 module.exports = ValueService

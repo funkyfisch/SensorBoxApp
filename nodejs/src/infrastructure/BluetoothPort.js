@@ -1,18 +1,18 @@
-var SerialPort = require('serialport')
-var Readline = SerialPort.parsers.Readline
-var port = new SerialPort('/dev/rfcomm0', { autoOpen: false, baudRate: 9600 })
-var parser = new Readline()
-var isOpen = false
-var latestSensorReadings = ''
-var getLatestSensorReadings = function() {
+const SerialPort = require('serialport')
+const Readline = SerialPort.parsers.Readline
+const port = new SerialPort('/dev/rfcomm0', { autoOpen: false, baudRate: 9600 })
+const parser = new Readline()
+let isOpen = false
+let latestSensorReadings = ''
+const getLatestSensorReadings = function() {
   return latestSensorReadings
 }
-var getData = function(data) {
+const getData = function(data) {
   latestSensorReadings = data
 }
 port.pipe(parser)
 
-var connectBluetooth = function() {
+const connectBluetooth = function() {
   if (isOpen) return
   port.open(function (err) {
     if (err) {

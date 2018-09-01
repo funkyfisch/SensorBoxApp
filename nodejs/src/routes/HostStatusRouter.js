@@ -1,37 +1,40 @@
-var hostStatusService = require('../services/HostStatusService')
-var hostStatusRouter = require('express').Router()
+const HostStatusService = require('../services/HostStatusService')
+const HostStatusRouter = require('express').Router()
 
-hostStatusRouter.get('/overview', (req, res) => {
-  hostStatusService.getBasicInfo()
-    .then((result) => res.status(200).json({ success: true, result: result }))
-    .catch((error) => res.status(404).json({ success: false, error: error }))
-})
-hostStatusRouter.get('/cpu/currentLoad', (req, res) => {
-  hostStatusService.getCpuLoads()
-    .then((result) => {
-      res.status(200).json({ success: true, result: result })
-    })
-    .catch((error) => {
-      res.status(404).json({ success: false, error: error })
-    })
-})
-hostStatusRouter.get('/memory', (req, res) => {
-  hostStatusService.getMemoryUsage()
-    .then((result) => {
-      res.status(200).json({ success: true, result: result })
-    })
-    .catch((error) => {
-      res.status(404).json({ success: false, error: error })
-    })
-})
-hostStatusRouter.get('/storage', (req, res) => {
-  hostStatusService.getStorageUsage()
-    .then((result) => {
-      res.status(200).json({ success: true, result: result })
-    })
-    .catch((error) => {
-      res.status(404).json({ success: false, error: error })
-    })
+HostStatusRouter.get('/overview', (req, res) => {
+  try {
+    let result = await HostStatusService.getBasicInfo()
+    res.status(200).json({ success: true, result: result })
+  } catch (error) {
+    res.status(500).json({ success: false, error: error })
+  }
 })
 
-module.exports = hostStatusRouter
+HostStatusRouter.get('/cpu/currentLoad', (req, res) => {
+  try {
+    let result = await HostStatusService.getCpuLoads()
+    res.status(200).json({ success: true, result: result })
+  } catch (error) {
+    res.status(500).json({ success: false, error: error })
+  }
+})
+
+HostStatusRouter.get('/memory', (req, res) => {
+  try {
+    let result = await HostStatusService.getMemoryUsage()
+    res.status(200).json({ success: true, result: result })
+  } catch (error) {
+    res.status(500).json({ success: false, error: error })
+  }
+})
+
+HostStatusRouter.get('/storage', (req, res) => {
+  try {
+    let result = await HostStatusService.getStorageUsage()
+    res.status(200).json({ success: true, result: result })
+  } catch (error) {
+    res.status(500).json({ success: false, error: error})
+  }
+})
+
+module.exports = HostStatusRouter

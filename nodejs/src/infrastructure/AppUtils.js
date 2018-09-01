@@ -1,13 +1,13 @@
 exports.generateHourlyData = async function(sensorType, sensorID, timestampHour) {
-  var generatedHourlyData = {
+  let generatedHourlyData = {
     timestamp_hour: timestampHour,
     type: sensorType,
     sensorID,
     values: {}
   }
-  for (var mins = 0; mins < 60; mins++) {
+  for (let mins = 0; mins < 60; mins++) {
     generatedHourlyData.values[mins] = {}
-    for (var secs = 0; secs< 60; secs++) {
+    for (let secs = 0; secs< 60; secs++) {
       var value = Math.random()
       generatedHourlyData.values[mins][secs] = value
     }

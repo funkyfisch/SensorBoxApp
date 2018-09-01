@@ -1,26 +1,34 @@
-var mainRouter = require('express').Router()
-var SensorRouter = require('./SensorRouter')
-var HostStatusRouter = require('./HostStatusRouter')
-var ValueRouter = require('./ValueRouter')
+const MainRouter = require('express').Router()
+const SensorRouter = require('./SensorRouter')
+const HostStatusRouter = require('./HostStatusRouter')
+const ValueRouter = require('./ValueRouter')
+const SettingsParser = require('../infrastructure/SettingsParser')
 
-mainRouter.use('/sensors', SensorRouter)
-mainRouter.use('/hostStatus', HostStatusRouter)
-mainRouter.use('/values', ValueRouter)
 
-mainRouter.get('/settings', (req, res) => {
-  require('../infrastructure/SettingsParser').readFrom('./settings.json').then((contents) =>
-  {
+MainRouter.use('/sensors', SensorRouter)
+MainRouter.use('/hostStatus', HostStatusRouter)
+MainRouter.use('/values', ValueRouter)
+
+MainRouter.get('/settings', (req, res) => {
+  try {
+    let contents = await SettingsParser.readFrom('./settings.json')
     res.status(200).json({ success: true, result: contents })
-  }).catch((error) => res.status(404).json({ success: false, error: error }))
+  } catch (error) {
+    res.status(500).json({ success: false, error: error }))
+  }
 })
-mainRouter.post('/settings', (req, res) => {
-  require('../infrastructure/SettingsParser').writeTo('./settings.json', req.body).then((result) =>
-  {
+
+MainRouter.post('/settings', (req, res) => {
+  try {
+    let result = await SettingsParser.writeTo('./settings.json', req.body).then((result) =>
     res.status(200).json({ success: true, result: result })
-  }).catch((error) => res.status(404).json({ success: false, error: error }))
+  } catch (error) {
+    res.status(500).json({ success: false, error: error }))
+  }
 })
-mainRouter.get('/', (req, res) => {
+
+MainRouter.get('/', (req, res) => {
   res.json({ message: 'Connected!' })
 })
 
-module.exports = mainRouter
+module.exports = MainRouter

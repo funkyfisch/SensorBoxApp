@@ -1,7 +1,7 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var ValueSchema = new Schema({
+const ValueSchema = new Schema({
   sensorid: { type: String },
   sensorname: { type: String, required: true },
   sensortype: { type: String, required: true },

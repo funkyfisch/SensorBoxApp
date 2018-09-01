@@ -1,57 +1,57 @@
-var sensorService = require('../services/SensorService')
-var sensorRouter = require('express').Router()
+const SensorService = require('../services/SensorService')
+const SensorRouter = require('express').Router()
 
-sensorRouter.get('/getGeneratedHourlyData', (req, res) => {
+SensorRouter.get('/getGeneratedHourlyData', (req, res) => {
   res.status(200).json({ success:true, result: req.params })
 })
 
-sensorRouter.get('/all', (req, res) => {
-  sensorService.getAll()
-    .then((sensors) => {
+SensorRouter.get('/all', (req, res) => {
+    try {
+      let sensors = await SensorService.getAll()
       res.status(200).json({ success:true, result: sensors })
-    })
-    .catch((error) => {
-      res.status(404).json({ success:false, error: error })
-    })
+    } catch (error) {
+      res.status(500).json({ success:false, error: error })
+    }
 })
 
-sensorRouter.get('/live', (req, res) => {
-  sensorService.getLiveData()
-    .then((data) => {
-      res.status(200).json({ success: true, result: data })
-    })
-    .catch((error) => {
-      res.status(404).json({ success: false, error: error })
-    })
+SensorRouter.get('/live', (req, res) => {
+  try {
+    let data = await SensorService.getLiveData()
+    res.status(200).json({ success: true, result: data })
+  } catch (error) {
+    res.status(500).json({ success: false, error: error })
+  }
 })
 
-sensorRouter.get('/values/:name&:type&:model', (req, res) => {
-  sensorService.getValuesOfOneSensor(req.params.name, req.params.type, req.params.model)
-    .then((value) => {
-      res.status(200).json({ success:true, result: value })
-    })
-    .catch((error) => {
-      res.status(404).json({ success: false, error: error })
-    })
+SensorRouter.get('/values/:name&:type&:model', (req, res) => {
+  try {
+    let value = await SensorService.getValuesOfOneSensor(req.params.name, req.params.type, req.params.model)
+    res.status(200).json({ success:true, result: value })
+  } catch (error) {
+    res.status(404).json({ success: false, error: error })
+  }
 })
 
-sensorRouter.post('/new/:name&:type&:model', (req, res) => {
-  sensorService.create(req.params.name, req.params.type, req.params.model)
-    .then((message) => {
-      res.status(200).json({ success:true, result: message })
-    })
-    .catch((error) => {
-      res.status(404).json({ success:false, error: error })
-    })
+SensorRouter.post('/new/:name&:type&:model', (req, res) => {
+  try {
+    let message = await SensorService.create(req.params.name, req.params.type, req.params.model)
+    res.status(200).json({ success:true, result: message })
+  } catch (error) {
+    res.status(500).json({ success:false, error: error })
+  }
 })
 
-sensorRouter.get('/dropSensorsCollection', (req, res) => {
-  sensorService.dropSensorCollection()
-    .then((result) => res.status(200).json({ success: true, message: result }))
+SensorRouter.get('/dropSensorsCollection', (req, res) => {
+  try {
+    let result = await SensorService.dropSensorCollection()
+    res.status(200).json({ success: true, message: result }))
+  } catch (error) {
+    res.status(500).json({ success: false, error: error })
+  }
 })
 
-sensorRouter.get('*', (req, res) => {
+SensorRouter.get('*', (req, res) => {
   res.status(404).json({ success:false, result: 'Nothing to see here' })
 })
 
-module.exports = sensorRouter
+module.exports = SensorRouter
