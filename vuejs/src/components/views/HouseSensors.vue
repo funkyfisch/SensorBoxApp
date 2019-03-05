@@ -11,7 +11,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-sm-12">
-                  <h5> Average Load </h5>
+                  <h5> Value </h5>
                   <h3> {{sensor.value}} </h3>
                 </div>
               </div>
